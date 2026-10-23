@@ -28,6 +28,7 @@
   <h1 id="title"></h1>
   <p id="text"></p>
   <div class="code" id="code" hidden></div>
+  <a id="open" hidden></a>
   <button id="copy" hidden></button>
   <a id="play" href="https://play.google.com/store/apps/details?id=com.sudoku.pro.sudoku_pro"></a>
   <a id="rustore" class="alt" href="https://www.rustore.ru/catalog/app/com.sudoku.pro.sudoku_pro">RuStore</a>
@@ -39,11 +40,11 @@
   var t = ru ? {
     title: 'Вас вызвали на судоку', text: 'Друг решил такую же головоломку. Сможете быстрее?',
     copy: 'Скопировать код', copied: 'Скопировано', play: 'Скачать в Google Play',
-    how: 'В игре: ИГРАТЬ → «Код друга» → вставить код.', none: 'Установите Sudoku Pro и играйте с друзьями.'
+    how: 'В игре: ИГРАТЬ → «Код друга» → вставить код.', none: 'Установите Sudoku Pro и играйте с друзьями.', open: 'Открыть в игре'
   } : {
     title: 'You have been challenged', text: 'A friend solved the same puzzle. Can you beat the time?',
     copy: 'Copy code', copied: 'Copied', play: 'Get it on Google Play',
-    how: 'In the game: PLAY → "Friend\'s code" → paste the code.', none: 'Install Sudoku Pro and play with friends.'
+    how: 'In the game: PLAY → "Friend\'s code" → paste the code.', none: 'Install Sudoku Pro and play with friends.', open: 'Open in the game'
   };
   var code = (new URLSearchParams(location.search).get('code') || '').toUpperCase();
   var valid = /^[0-9A-Z]{5}-[0-9A-Z]{5}-[0-9A-Z]{4}$/.test(code);
@@ -54,6 +55,14 @@
   if (!valid) return;
   $('code').textContent = code; $('code').hidden = false;
   $('copy').textContent = t.copy; $('copy').hidden = false;
+  // Android: явный запуск приложения по пакету, если ссылка открылась в браузере
+  // (в мессенджерах встроенный браузер не передаёт ссылку приложению).
+  if (/Android/i.test(navigator.userAgent)) {
+    $('open').href = 'intent://serg3z.github.io/c/?code=' + encodeURIComponent(code) +
+      '#Intent;scheme=https;package=com.sudoku.pro.sudoku_pro;S.browser_fallback_url=' +
+      encodeURIComponent(location.href) + ';end';
+    $('open').textContent = t.open; $('open').hidden = false;
+  }
   $('how').textContent = t.how; $('how').hidden = false;
   $('copy').onclick = function () {
     var done = function () { $('copy').textContent = t.copied; };

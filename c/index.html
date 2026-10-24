@@ -46,8 +46,8 @@
     copy: 'Copy code', copied: 'Copied', play: 'Get it on Google Play',
     how: 'In the game: PLAY → "Friend\'s code" → paste the code.', none: 'Install Sudoku Pro and play with friends.', open: 'Open in the game'
   };
-  var code = (new URLSearchParams(location.search).get('code') || '').toUpperCase();
-  var valid = /^[0-9A-Z]{4}(-[0-9A-Z]{4}){3}$/.test(code);
+  var code = (new URLSearchParams(location.search).get('code') || '');
+  var valid = /^[A-Za-z0-9_-]{12}$/.test(code);
   var $ = function (id) { return document.getElementById(id); };
   $('title').textContent = valid ? t.title : 'Sudoku Pro';
   $('text').textContent = valid ? t.text : t.none;

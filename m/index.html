@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Minesweeper Pro</title>
+<style>
+  :root { --bg:#f4f1ea; --fg:#2b2b2b; --card:#fff; --accent:#5ABE7A; --sub:#6b6b6b; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#1d2320; --fg:#eee; --card:#2a322e; --sub:#a8b3ad; } }
+  body { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+         background:var(--bg); color:var(--fg); font:16px/1.5 system-ui, sans-serif; }
+  main { width:100%; max-width:420px; margin:16px; padding:28px 24px; background:var(--card);
+         border-radius:24px; text-align:center; box-sizing:border-box; }
+  h1 { font-size:22px; margin:0 0 8px; }
+  p { margin:8px 0; color:var(--sub); }
+  .code { margin:18px 0; padding:14px; border-radius:16px; background:var(--bg);
+          font:700 24px/1 ui-monospace, monospace; letter-spacing:2px; word-break:break-all; }
+  a, button { display:block; width:100%; box-sizing:border-box; margin:10px 0 0; padding:14px; border:0;
+              border-radius:24px; font:700 16px system-ui, sans-serif; text-decoration:none; cursor:pointer;
+              background:var(--accent); color:#fff; }
+  a.alt { background:transparent; color:var(--accent); border:2px solid var(--accent); }
+  [hidden] { display:none; }
+</style>
+</head>
+<body>
+<main>
+  <h1 id="title"></h1>
+  <p id="text"></p>
+  <div class="code" id="code" hidden></div>
+  <a id="open" hidden></a>
+  <button id="copy" hidden></button>
+  <a id="play" href="https://play.google.com/store/apps/details?id=com.sudoku.pro.minesweeper_pro"></a>
+  <a id="rustore" class="alt" href="https://www.rustore.ru/catalog/app/com.sudoku.pro.minesweeper_pro">RuStore</a>
+  <p id="how" hidden></p>
+</main>
+<script>
+(function () {
+  var ru = /^ru|^uk|^be/i.test(navigator.language || '');
+  var t = ru ? {
+    title: 'Вас вызвали на сапёра', text: 'Друг прошёл такое же поле. Сможете быстрее?',
+    copy: 'Скопировать код', copied: 'Скопировано', play: 'Скачать в Google Play',
+    how: 'В игре: ИГРАТЬ → «Код друга» → вставить код.', none: 'Установите Сапёр Pro и играйте с друзьями.', open: 'Открыть в игре'
+  } : {
+    title: 'You have been challenged', text: 'A friend cleared the same field. Can you beat the time?',
+    copy: 'Copy code', copied: 'Copied', play: 'Get it on Google Play',
+    how: 'In the game: PLAY → "Friend\'s code" → paste the code.', none: 'Install Minesweeper Pro and play with friends.', open: 'Open in the game'
+  };
+  var code = (new URLSearchParams(location.search).get('code') || '');
+  var valid = /^[A-Za-z0-9_-]{12}$/.test(code);
+  var $ = function (id) { return document.getElementById(id); };
+  $('title').textContent = valid ? t.title : 'Minesweeper Pro';
+  $('text').textContent = valid ? t.text : t.none;
+  $('play').textContent = t.play;
+  if (!valid) return;
+  $('code').textContent = code; $('code').hidden = false;
+  $('copy').textContent = t.copy; $('copy').hidden = false;
+  // Android: явный запуск приложения по пакету, если ссылка открылась в браузере
+  // (в мессенджерах встроенный браузер не передаёт ссылку приложению).
+  if (/Android/i.test(navigator.userAgent)) {
+    $('open').href = 'intent://serg3z.github.io/m/?code=' + encodeURIComponent(code) +
+      '#Intent;scheme=https;package=com.sudoku.pro.minesweeper_pro;S.browser_fallback_url=' +
+      encodeURIComponent(location.href) + ';end';
+    $('open').textContent = t.open; $('open').hidden = false;
+  }
+  $('how').textContent = t.how; $('how').hidden = false;
+  $('copy').onclick = function () {
+    var done = function () { $('copy').textContent = t.copied; };
+    if (navigator.clipboard) navigator.clipboard.writeText(code).then(done, done); else done();
+  };
+})();
+</script>
+</body>
+</html>

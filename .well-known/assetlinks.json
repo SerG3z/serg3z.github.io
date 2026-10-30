@@ -22,5 +22,17 @@
         "54:80:05:CB:0D:1E:76:D6:0A:40:8E:78:FA:94:75:72:9C:22:5B:BB:9D:EE:A4:1F:F5:24:91:59:13:06:A4:7B"
       ]
     }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.sapper.pro.sapper_pro",
+      "sha256_cert_fingerprints": [
+        "54:80:05:CB:0D:1E:76:D6:0A:40:8E:78:FA:94:75:72:9C:22:5B:BB:9D:EE:A4:1F:F5:24:91:59:13:06:A4:7B"
+      ]
+    }
   }
 ]

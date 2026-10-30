@@ -30,8 +30,8 @@
   <div class="code" id="code" hidden></div>
   <a id="open" hidden></a>
   <button id="copy" hidden></button>
-  <a id="play" href="https://play.google.com/store/apps/details?id=com.sudoku.pro.minesweeper_pro"></a>
-  <a id="rustore" class="alt" href="https://www.rustore.ru/catalog/app/com.sudoku.pro.minesweeper_pro">RuStore</a>
+  <a id="play" href="https://play.google.com/store/apps/details?id=com.sapper.pro.sapper_pro"></a>
+  <a id="rustore" class="alt" href="https://www.rustore.ru/catalog/app/com.sapper.pro.sapper_pro">RuStore</a>
   <p id="how" hidden></p>
 </main>
 <script>
@@ -59,7 +59,7 @@
   // (в мессенджерах встроенный браузер не передаёт ссылку приложению).
   if (/Android/i.test(navigator.userAgent)) {
     $('open').href = 'intent://serg3z.github.io/m/?code=' + encodeURIComponent(code) +
-      '#Intent;scheme=https;package=com.sudoku.pro.minesweeper_pro;S.browser_fallback_url=' +
+      '#Intent;scheme=https;package=com.sapper.pro.sapper_pro;S.browser_fallback_url=' +
       encodeURIComponent(location.href) + ';end';
     $('open').textContent = t.open; $('open').hidden = false;
   }
